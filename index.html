@@ -67,7 +67,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
   <script type="text/javascript">
-    // El enlace a tu modelo cargado en la nube
     const URL = "https://teachablemachine.withgoogle.com/models/Ot1KHrevW/";
 
     let model, webcam, labelContainer, maxPredictions;
@@ -79,10 +78,12 @@
         model = await tmImage.load(modelURL, metadataURL);
         maxPredictions = model.getTotalClasses();
 
-        // Configuración de la cámara
-        const flip = true; 
+        // Configuración para usar la cámara trasera en móviles (facingMode: environment)
+        const flip = false; // No invertimos la imagen en la cámara trasera
         webcam = new tmImage.Webcam(350, 350, flip); 
-        await webcam.setup(); 
+        
+        // Forzamos el acceso a la cámara posterior
+        await webcam.setup({ facingMode: "environment" }); 
         await webcam.play();
         window.requestAnimationFrame(loop);
 
